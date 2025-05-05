@@ -1,11 +1,25 @@
 resources:
   jobs:
     training_job:
-      name: "ML Training Job"
+      name: "ML Training PoC"
       tasks:
+        - task_key: prepare_features
+          notebook_task:
+            notebook_path: ./notebooks/01_prepare_features.py
+          cluster:
+            existing_cluster_id: ${var.cluster_id}
+
         - task_key: train_model
+          depends_on: [prepare_features]
           notebook_task:
             notebook_path: ./notebooks/02_train_model.py
           cluster:
             existing_cluster_id: ${var.cluster_id}
-      schedule: null
+
+        - task_key: register_model
+          depends_on: [train_model]
+          notebook_task:
+            notebook_path: ./notebooks/03_register_model.py
+          cluster:
+            existing_cluster_id: ${var.cluster_id}
+
