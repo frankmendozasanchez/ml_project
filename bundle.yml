@@ -8,6 +8,8 @@ targets:
     mode: development
     variables:
       cluster_id: 0505-165440-umr7wytx
+      experiment_path: "/Users/francisco.mendoza@priceshoes.com/experiments/ml_training/dev"
+      model_name: "ml_training_dev_model"
     default: true
   prod:
     workspace:
@@ -15,3 +17,5 @@ targets:
     mode: production
     variables:
       cluster_id: 0402-181715-ojivg5y7
+      experiment_path: "/Users/francisco.mendoza@priceshoes.com/experiments/ml_training/prod"
+      model_name: "ml_training_prod_model"
