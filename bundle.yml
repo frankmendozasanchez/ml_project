@@ -6,8 +6,12 @@ targets:
     workspace:
       host: https://dbc-bef8aba3-acbf.cloud.databricks.com
     mode: development
+    variables:
+      cluster_id: 0505-165440-umr7wytx
     default: true
   prod:
     workspace:
       host: https://dbc-76921338-385d.cloud.databricks.com
     mode: production
+    variables:
+      cluster_id: 0402-181715-ojivg5y7
