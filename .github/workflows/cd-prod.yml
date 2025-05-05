@@ -1,0 +1,32 @@
+name: CD - PROD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install databricks-cli databricks-sdk
+
+      - name: Run job in Databricks PROD
+        run: |
+          databricks bundle validate --target prod
+          databricks bundle deploy --target prod
+          databricks bundle run training_job --target prod
+        env:
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}
