@@ -1,0 +1,11 @@
+resources:
+  jobs:
+    training_job:
+      name: "ML Training Job"
+      tasks:
+        - task_key: train_model
+          notebook_task:
+            notebook_path: ./notebooks/02_train_model.py
+          cluster:
+            existing_cluster_id: ${var.cluster_id}
+      schedule: null
