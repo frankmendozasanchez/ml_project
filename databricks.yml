@@ -1,25 +1,45 @@
+bundle:
+  name: ml-cicd-project
+
+include:
+  - notebooks/*
+
+targets:
+  dev:
+    mode: development
+    workspace:
+      host: https://dbc-bef8aba3-acbf.cloud.databricks.com
+      root_path: /Shared/ml-cicd
+    config_file: bundle_config/dev.yml
+
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-76921338-385d.cloud.databricks.com
+      root_path: /Shared/ml-cicd
+    config_file: bundle_config/prod.yml
+
 resources:
   jobs:
     training_job:
-      name: "ML Training PoC"
+      name: train-model
       tasks:
         - task_key: prepare_features
           notebook_task:
-            notebook_path: ./notebooks/01_prepare_features.py
+            notebook_path: notebooks/01_prepare_features.py
           cluster:
             existing_cluster_id: ${var.cluster_id}
-
         - task_key: train_model
-          depends_on: [prepare_features]
+          depends_on:
+            - prepare_features
           notebook_task:
-            notebook_path: ./notebooks/02_train_model.py
+            notebook_path: notebooks/02_train_model.py
           cluster:
             existing_cluster_id: ${var.cluster_id}
-
         - task_key: register_model
-          depends_on: [train_model]
+          depends_on:
+            - train_model
           notebook_task:
-            notebook_path: ./notebooks/03_register_model.py
+            notebook_path: notebooks/03_register_model.py
           cluster:
             existing_cluster_id: ${var.cluster_id}
-
